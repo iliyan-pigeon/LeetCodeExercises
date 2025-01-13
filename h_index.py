@@ -1,3 +1,17 @@
+# Solution 1
+def hIndex(citations):
+    citations.sort(reverse=True)
+    h_index = 0
+    for i, citation in enumerate(citations):
+
+        if i + 1 <= citation:
+            h_index = i + 1
+        else:
+            break
+    return h_index
+
+
+# Solution 2
 class Solution(object):
     def hIndex(self, citations):
         h_index = 0
