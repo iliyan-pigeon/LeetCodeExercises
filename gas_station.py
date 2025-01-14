@@ -1,6 +1,24 @@
 # Solution 1
 class Solution(object):
     def canCompleteCircuit(self, gas, cost):
+        if sum(gas) < sum(cost):
+            return -1
+            
+        start_index = 0
+        current_gas = 0
+        
+        for i in range(len(gas)):
+            current_gas = current_gas + gas[i] - cost[i]
+            if current_gas < 0:
+                current_gas = 0
+                start_index = i+1
+                
+        return start_index
+
+
+# Solution 2
+class Solution(object):
+    def canCompleteCircuit(self, gas, cost):
         n = len(gas)
         total_tank = 0
         current_tank = 0
@@ -17,7 +35,7 @@ class Solution(object):
         return start_index if total_tank >= 0 else -1
 
 
-# Solution 2
+# Solution 3
 class Solution(object):
     def canCompleteCircuit(gas, cost):
         result = -1
