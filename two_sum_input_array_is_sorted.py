@@ -19,4 +19,16 @@ class Solution(object):
             elif current_sum < target:
                 left += 1
             else:
-                right -= 1  
+                right -= 1
+
+
+# Solution three
+class Solution(object):
+    def twoSum(self, numbers, target):
+        num_to_index = {}
+
+        for i, num in enumerate(numbers):
+            complement = target - num
+            if complement in num_to_index:
+                return [num_to_index[complement] + 1, i + 1]
+            num_to_index[num] = i
