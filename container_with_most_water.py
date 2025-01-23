@@ -12,7 +12,7 @@ class Solution(object):
         return result
 
 
-#Solution 2
+# Solution 2
 class Solution:
     def maxArea(self, height):
         left, right = 0, len(height) - 1
