@@ -1,20 +1,17 @@
-def lengthOfLongestSubstring(s):
-    longest = s
-    filtered_s = ""
-    left = 0
-    right = len(s)
-    counter = 0
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
 
-    while len(filtered_s) != longest:
-        longest = s[left:right]
-        filtered_s = set(longest)
-        if counter % 2 == 0:
-            left += 1
-        elif counter % 2 != 0:
-            right += 1
-        counter += 1
+        left = 0
+        char_set = set()
+        max_length = 0
 
-    return longest
+        for right in range(len(s)):
 
+            while s[right] in char_set:
+                char_set.remove(s[left])
+                left += 1
 
-print(lengthOfLongestSubstring("abcabcbb"))
+            char_set.add(s[right])
+            max_length = max(max_length, right - left + 1)
+
+        return max_length
