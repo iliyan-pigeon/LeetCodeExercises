@@ -1,24 +1,18 @@
 def findSubstring(s, words):
     word_length = len(words[0])
     all_words_length = len("".join(words))
-    words_amount = len(words)
     starting_points = []
 
-    for i in range(0, len(s) - all_words_length + 1, word_length):
+    for i in range(len(s) - all_words_length + 1):
         current = s[i:i+all_words_length]
-        current_list = set()
-        left = 0
-        right = word_length
+        current_list = []
 
-        for j in range(words_amount):
-            current_list.add(current[left:right])
-            left += word_length
-            right += word_length
+        for j in range(0, len(current), word_length):
+            word = current[j:j+word_length]
+            if word in words:
+                current_list.append(word)
 
-        if current_list == set(words):
+        if sorted(current_list) == sorted(words):
             starting_points.append(i)
 
     return starting_points
-
-
-print(findSubstring("wordgoodgoodgoodbestword", ["word","good","best","good"]))
