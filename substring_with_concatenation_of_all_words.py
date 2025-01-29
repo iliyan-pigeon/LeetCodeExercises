@@ -22,6 +22,7 @@ def findSubstring(s, words):
 # Solution 2
 from collections import Counter
 
+
 class Solution(object):
     def findSubstring(self, s, words):
         if not s or not words:
