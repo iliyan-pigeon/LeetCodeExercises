@@ -1,3 +1,4 @@
+# Solution 1
 class Solution(object):
     def isAnagram(self, s, t):
         result = True
@@ -10,3 +11,8 @@ class Solution(object):
                 result = False
 
         return result
+
+# Solution 2
+class Solution(object):
+    def isAnagram(self, s, t):
+        return sorted(s) == sorted(t)
