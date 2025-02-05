@@ -1,3 +1,4 @@
+# Solution 1
 def twoSum(nums, target):
 
     for i in range(len(nums) - 1):
@@ -7,4 +8,17 @@ def twoSum(nums, target):
                     return [i, j]
 
 
-print(twoSum([-1,-2,-3,-4,-5], -8))
+# Solution 2
+class Solution(object):
+    def twoSum(self, nums, target):
+        num_map = {}
+
+        for i, num in enumerate(nums):
+            complement = target - num
+
+            if complement in num_map:
+                return [num_map[complement], i]
+
+            num_map[num] = i
+
+        return []
