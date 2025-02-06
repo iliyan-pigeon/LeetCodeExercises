@@ -1,16 +1,17 @@
-def longestConsecutive(nums):
-    consecutive = []
-    result = 0
+class Solution(object):
+    def longestConsecutive(self, nums):
+        consecutive = []
+        result = 0
 
-    for number in sorted(set(nums)):
+        for number in sorted(set(nums)):
 
-        if not consecutive or number - consecutive[-1] == 1:
-            consecutive.append(number)
-        else:
-            consecutive = [number]
+            if not consecutive or number - consecutive[-1] == 1:
+                consecutive.append(number)
+            else:
+                consecutive = [number]
 
-        current_length = len(consecutive)
-        if result < current_length:
-            result = current_length
+            current_length = len(consecutive)
+            if result < current_length:
+                result = current_length
 
-    return result
+        return result
