@@ -20,4 +20,3 @@ class Solution(object):
         second.next = second.next.next
 
         return dummy.next
-    
