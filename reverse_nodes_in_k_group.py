@@ -6,26 +6,40 @@ class ListNode(object):
 
 class Solution(object):
     def reverseKGroup(self, head, k):
-        dummy = ListNode()
+        if not head or k == 1:
+            return head
+
+        # Step 1: Count total nodes
+        dummy = ListNode(0)
         dummy.next = head
-        prev = dummy
+        prev_group_end = dummy
+        current = head
 
-        nodes_amount = 0
-        reversed_nodes = 0
+        # Count nodes
+        count = 0
+        while current:
+            count += 1
+            current = current.next
 
-        while prev.next is not None:
-            nodes_amount += 1
-            prev = prev.next
+        # Step 2: Reverse in groups of k
+        while count >= k:
+            prev = None
+            current = prev_group_end.next
+            next_node = None
 
-        current = prev.next
-        reversed_nodes += k
-        while reversed_nodes < nodes_amount:
-            for _ in range(k-1):
+            # Reverse k nodes
+            for _ in range(k):
                 next_node = current.next
-                current.next = next_node.next
-                next_node.next = prev.next
-                prev.next = next_node
+                current.next = prev
+                prev = current
+                current = next_node
 
-                reversed_nodes += k
+            # Connect reversed part with previous group
+            temp = prev_group_end.next  # This is the old head (now tail)
+            prev_group_end.next = prev  # prev is now the new head
+            temp.next = current  # Connect to the next part of the list
+            prev_group_end = temp  # Move prev_group_end to the new tail
+
+            count -= k  # Reduce remaining nodes count
 
         return dummy.next
