@@ -1,6 +1,6 @@
 from typing import List
 
-
+# Solution 1
 class Solution:
     def moveZeroes(self, nums: List[int]) -> None:
 
@@ -21,5 +21,12 @@ class Solution:
                 break
 
 
-a = Solution()
-print(a.moveZeroes([0,1,0,3,12]))
+# Solution 2
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        non_zero = 0
+
+        for i in range(len(nums)):
+            if nums[i] != 0:
+                nums[non_zero], nums[i] = nums[i], nums[non_zero]
+                non_zero += 1
