@@ -1,4 +1,5 @@
 from typing import List
+from collections import defaultdict
 
 
 # Solution 1
@@ -37,6 +38,18 @@ class Solution:
         return count
 
 
-a = Solution()
+# Solution 3
+class Solution:
+    def maxOperations(self, nums: List[int], k: int) -> int:
+        counter = defaultdict(int)
+        count = 0
 
-print(a.maxOperations([3,1,3,4,3], 6))
+        for num in nums:
+            complement = k - num
+            if counter[complement] > 0:
+                count += 1
+                counter[complement] -= 1
+            else:
+                counter[num] += 1
+
+        return count
