@@ -30,3 +30,11 @@ class Solution:
             if nums[i] != 0:
                 nums[non_zero], nums[i] = nums[i], nums[non_zero]
                 non_zero += 1
+
+
+# Solution 3
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        for i in range(nums.count(0)):
+                nums.remove(0)
+                nums.append(0)
