@@ -18,3 +18,14 @@ class Solution:
 
         return "".join(result)
 
+
+class Solution:
+    def removeStars(self, s: str) -> str:
+        letters = []
+        for letter in s:
+            if letter == "*":
+                letters.pop()
+            else:
+                letters.append(letter)
+
+        return "".join(letters)
