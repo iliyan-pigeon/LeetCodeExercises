@@ -1,4 +1,4 @@
-# Not completed 
+# Not completed
 class Solution:
     def decodeString(self, s: str) -> str:
         result = ""
