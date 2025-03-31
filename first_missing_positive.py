@@ -4,7 +4,11 @@ from typing import List
 # Solution 1
 class Solution:
     def firstMissingPositive(self, nums: List[int]) -> int:
+        nums.sort()
+        smallest = 1
 
-        for i in range(1, max(nums)+2):
-            if i not in nums:
-                return i
+        for num in nums:
+            if num == smallest:
+                smallest += 1
+
+        return smallest
