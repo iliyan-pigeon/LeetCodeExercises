@@ -1,6 +1,7 @@
 from typing import List
 
 
+# Solution 1
 class Solution:
     def exist(self, board: List[List[str]], word: str) -> bool:
         if not board:
@@ -36,4 +37,43 @@ class Solution:
                     return True
 
         return False
-        
+
+
+# Solution 2
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        if not board:
+            return False
+
+        rows, cols = len(board), len(board[0])
+        word_length = len(word)
+
+        def is_valid(r, c):
+            return 0 <= r < rows and 0 <= c < cols
+
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+        for row in range(rows):
+            for column in range(cols):
+                stack = [(row, column, 0)]
+                visited = set()
+
+                while stack:
+                    current_r, current_c, index = stack.pop()
+
+                    if index == word_length:
+                        return True
+
+                    if not is_valid(current_r, current_c) or (current_r, current_c) in visited or board[current_r][
+                        current_c] != word[index]:
+                        continue
+
+                    visited.add((current_r, current_c))
+
+                    for dr, dc in directions:
+                        stack.append((current_r + dr, current_c + dc, index + 1))
+
+                    # Remove the current cell from visited to allow other paths to use it
+                    visited.remove((current_r, current_c))
+
+        return False
