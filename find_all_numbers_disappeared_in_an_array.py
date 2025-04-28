@@ -1,3 +1,4 @@
+# Solution 1
 class Solution:
     def findDisappearedNumbers(self, nums: List[int]) -> List[int]:
 
@@ -8,4 +9,14 @@ class Solution:
         result = [i + 1 for i in range(len(nums)) if nums[i] > 0]
 
         return result
-      
+
+
+# Solution 2
+class Solution:
+    def findDisappearedNumbers(self, nums: List[int]) -> List[int]:
+        result = [0] * len(nums)
+
+        for i in nums:
+            result[i-1] = i
+
+        return [i + 1 for i in range(len(result)) if result[i] == 0]
