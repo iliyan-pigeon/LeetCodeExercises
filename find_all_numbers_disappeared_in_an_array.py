@@ -20,3 +20,17 @@ class Solution:
             result[i-1] = i
 
         return [i + 1 for i in range(len(result)) if result[i] == 0]
+
+
+# Solution 3
+class Solution:
+    def findDisappearedNumbers(self, nums: List[int]) -> List[int]:
+
+        set_nums = set(nums)
+        result = []
+
+        for i in range(1, len(nums) + 1):
+            if i not in set_nums:
+                result.append(i)
+
+        return result
