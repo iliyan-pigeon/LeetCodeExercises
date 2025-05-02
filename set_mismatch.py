@@ -2,6 +2,7 @@ from typing import List
 from collections import Counter
 
 
+# Solution 1
 class Solution:
     def findErrorNums(self, nums: List[int]) -> List[int]:
         nums_dict = Counter(nums)
@@ -17,4 +18,16 @@ class Solution:
                 break
 
         return result
-      
+
+
+# Solution 2
+class Solution:
+    def findErrorNums(self, nums):
+        n = len(nums)
+        actual_sum = sum(nums)
+        unique_sum = sum(set(nums))
+        expected_sum = n * (n + 1) // 2
+
+        duplicate = actual_sum - unique_sum
+        missing = expected_sum - unique_sum
+        return [duplicate, missing]
