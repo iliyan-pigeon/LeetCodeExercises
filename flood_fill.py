@@ -23,23 +23,11 @@ class Solution:
                 if image[row+1][column] == color_for_change and [row+1, column] not in already_processed:
                     pixels_for_change.append([row+1, column])
                     already_processed.append([row+1, column])
-                if column + 1 < len(image[row]) and [row+1, column+1] not in already_processed:
-                    pixels_for_change.append([row+1, column+1])
-                    already_processed.append([row+1, column+1])
-                if column - 1 >= 0 and [row+1, column-1] not in already_processed:
-                    pixels_for_change.append([row+1, column-1])
-                    already_processed.append([row+1, column-1])
 
             if row - 1 >= 0:
                 if image[row - 1][column] == color_for_change and [row - 1, column] not in already_processed:
                     pixels_for_change.append([row - 1, column])
                     already_processed.append([row - 1, column])
-                if column + 1 < len(image[row]) and [row - 1, column + 1] not in already_processed:
-                    pixels_for_change.append([row - 1, column + 1])
-                    already_processed.append([row - 1, column + 1])
-                if column - 1 >= 0 and [row - 1, column - 1] not in already_processed:
-                    pixels_for_change.append([row - 1, column - 1])
-                    already_processed.append([row - 1, column - 1])
 
             if column + 1 < len(image[row]):
                 if image[row][column + 1] == color_for_change and [row, column + 1] not in already_processed:
@@ -52,4 +40,4 @@ class Solution:
                     already_processed.append([row, column - 1])
 
         return image
-      
+        
