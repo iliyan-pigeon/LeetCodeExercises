@@ -3,7 +3,7 @@ from typing import List
 
 class Solution:
     def mostCommonWord(self, paragraph: str, banned: List[str]) -> str:
-        paragraph_list = [i.strip(",.!?") for i in paragraph.split(" ")]
+        paragraph_list = [i.strip(",.!?';:").lower() for i in paragraph.replace(",", " ").split()]
         occurrences = {}
         result = ""
         highest_amount = 0
@@ -18,4 +18,3 @@ class Solution:
                     result = word
 
         return result
-      
