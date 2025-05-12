@@ -13,10 +13,9 @@ class Solution:
                 plus_index = name.index("+")
                 name = name[:plus_index]
 
-            the_email = name + domain
+            the_email = name + "@" + domain
 
             if the_email not in unique_emails:
-                unique_emails.append(email)
+                unique_emails.append(the_email)
 
         return len(unique_emails)
-      
