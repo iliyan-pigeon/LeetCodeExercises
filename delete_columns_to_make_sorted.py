@@ -12,11 +12,14 @@ class Solution:
                 if previous is None:
                     previous = word[pointer]
 
-                elif ord(word[pointer]) <= ord(previous):
+                elif ord(word[pointer]) < ord(previous):
                     result += 1
                     break
+
+                else:
+                    previous = word[pointer]
 
             pointer += 1
 
         return result
-      
+
