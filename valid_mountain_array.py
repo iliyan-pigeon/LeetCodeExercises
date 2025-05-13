@@ -6,6 +6,9 @@ class Solution:
         if len(arr) < 3:
             return False
 
+        if arr[0] >= arr[1]:
+            return False
+
         result = True
         direction = "Up"
         current_number = -float("inf")
@@ -25,5 +28,8 @@ class Solution:
 
             current_number = number
 
+        if direction == "Up":
+            result = False
+
         return result
-      
+        
