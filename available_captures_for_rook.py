@@ -2,7 +2,7 @@ from typing import List
 
 
 class Solution:
-    def numRockCaptures(self, board: List[List[int]]) -> int:
+    def numRookCaptures(self, board: List[List[int]]) -> int:
         result = 0
         r_row = None
         r_column = None
@@ -21,8 +21,9 @@ class Solution:
         left = r_column
         right = r_column
 
+        directions = []
+
         while True:
-            directions = []
 
             if up + 1 < len(board) and "up" not in directions:
                 up += 1
@@ -70,4 +71,6 @@ class Solution:
 
             if all([i in directions for i in ["up", "down", "left", "right"]]):
                 break
-              
+
+        return result
+
