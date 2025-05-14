@@ -11,13 +11,13 @@ class Solution:
                 chars_map[ch] = 0
             chars_map[ch] += 1
 
-        keys_to_remove = []
+        keys_to_remove = set()
 
         for i in range(1, len(words)):
 
             for ch in chars_map.keys():
                 if ch not in words[i]:
-                    keys_to_remove.append(ch)
+                    keys_to_remove.add(ch)
 
                 elif chars_map[ch] > words[i].count(ch):
                     chars_map[ch] = words[i].count(ch)
@@ -30,4 +30,3 @@ class Solution:
                 result.append(k)
 
         return result
-      
