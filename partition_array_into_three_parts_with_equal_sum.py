@@ -2,26 +2,25 @@ from typing import List
 
 
 class Solution:
-    def canThreePartsEquaSum(self, arr: List[int]) -> bool:
+    def canThreePartsEqualSum(self, arr: List[int]) -> bool:
+        total_sum = sum(arr)
 
-        first_pointer = 0
-        second_pointer = len(arr)
+        if total_sum % 3 != 0:
+            return False
 
-        result = False
+        target_sum = total_sum // 3
+        current_sum = 0
+        found_parts = 0
 
-        while first_pointer < second_pointer:
-            first = sum(arr[:first_pointer])
-            second = sum(arr[first_pointer:second_pointer])
-            third = sum(arr[second_pointer:])
+        for num in arr:
+            current_sum += num
 
-            if first == second == third:
-                result = True
-                break
+            if current_sum == target_sum:
+                found_parts += 1
+                current_sum = 0
 
-            if first > third:
-                second_pointer -= 1
-            else:
-                first_pointer += 1
+            if found_parts == 2:
+                return True
 
-        return result
-      
+        return False
+        
