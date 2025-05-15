@@ -19,7 +19,7 @@ class Solution:
                 found_parts += 1
                 current_sum = 0
 
-            if found_parts == 2:
+            if found_parts == 3:
                 return True
 
         return False
