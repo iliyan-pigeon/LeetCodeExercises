@@ -15,8 +15,13 @@ class Solution:
                     nums[i] = abs(number)
                     k = 0
                 else:
-                    nums[i] = abs(number)
-                    k -= 1
+                    if i < len(nums)-1 and negatives_count == 1:
+                        if abs(number) < nums[i+1]:
+                            k = 0
+                    else:
+                        nums[i] = abs(number)
+                        k -= 1
+                        negatives_count -= 1
 
             else:
                 while k:
