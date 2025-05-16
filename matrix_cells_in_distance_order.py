@@ -1,6 +1,7 @@
 from typing import List
 
 
+# Solution 1
 class Solution:
     def allCellsDistOrder(self, rows: int, cols: int, rCenter: int, cCenter: int) -> List[List[int]]:
         result = [[rCenter, cCenter]]
@@ -38,4 +39,14 @@ class Solution:
             for_processing = for_processing[processed:]
 
         return result
-        
+
+
+# Solution 2
+class Solution:
+    def allCellsDistOrder(self, rows: int, cols: int, rCenter: int, cCenter: int) -> List[List[int]]:
+        result = []
+        for r in range(rows):
+            for c in range(cols):
+                result.append([r, c])
+        result.sort(key=lambda a: abs(a[0] - rCenter) + abs(a[1] - cCenter))
+        return result
