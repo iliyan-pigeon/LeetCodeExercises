@@ -13,23 +13,34 @@ class Solution:
                 row = cell[0]
                 col = cell[1]
 
-                if row+1 < rows and [row+1, col] not in result and [row+1, col] not in for_processing:
-                    result.append([row+1, col])
-                    for_processing.append([row+1, col])
+                row_up = row+1
+                row_up_cell = [row_up, col]
 
-                if row-1 >= 0 and [row-1, col] not in result and [row-1, col] not in for_processing:
-                    result.append([row-1, col])
-                    for_processing.append([row-1, col])
+                row_down = row-1
+                row_down_cell = [row_down, col]
 
-                if col+1 < cols and [row, col+1] not in result and [row, col+1] not in for_processing:
-                    result.append([row, col+1])
-                    for_processing.append([row, col+1])
+                col_right = col+1
+                col_right_cell = [row, col_right]
 
-                if col-1 >= 0 and [row, col-1] not in result and [row, col-1] not in for_processing:
+                col_left = col-1
+                col_left_cell = [row, col_left]
+
+                if row_up < rows and row_up_cell not in result and row_up_cell not in for_processing:
+                    result.append(row_up_cell)
+                    for_processing.append(row_up_cell)
+
+                if row_down >= 0 and row_down_cell not in result and row_down_cell not in for_processing:
+                    result.append(row_down_cell)
+                    for_processing.append(row_down_cell)
+
+                if col_right < cols and col_right_cell not in result and col_right_cell not in for_processing:
+                    result.append(col_right_cell)
+                    for_processing.append(col_right_cell)
+
+                if col_left >= 0 and col_left_cell not in result and col_left_cell not in for_processing:
                     result.append([row, col-1])
                     for_processing.append([row, col-1])
 
             for_processing = for_processing[processed:]
 
         return result
-      
