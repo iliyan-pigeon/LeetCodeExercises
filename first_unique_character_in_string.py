@@ -20,8 +20,8 @@ class Solution:
             count[ch][1] += 1
 
         for c in count:
-            if c[1] == 1:
-                return c[0]
+            if count[c][1] == 1:
+                return count[c][0]
 
         return -1
         
