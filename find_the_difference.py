@@ -6,7 +6,16 @@ class Solution:
 
 
 # Solution 2
+from collections import Counter
+
+
 class Solution:
     def findTheDifference(self, s: str, t: str) -> str:
 
-        return [i for i in t if i not in s][0]
+        count = Counter(t)
+
+        for i, v in count.items():
+            for j in range(v):
+                if i not in s:
+                    return i
+                s = s.replace(i, "", 1)
