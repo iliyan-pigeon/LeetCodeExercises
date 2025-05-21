@@ -4,14 +4,18 @@ from collections import Counter
 class Solution:
     def longestPalindrome(self, s: str) -> int:
         count = Counter(s)
-
-        odd_added = 0
         length = 0
+        odd_found = False
 
-        for ch, amount in count.items():
-            if amount % 2 != 0 and odd_added < amount:
-                odd_added = amount
-            elif amount % 2 == 0:
+        for amount in count.values():
+            if amount % 2 == 0:
                 length += amount
+            else:
+                length += amount - 1
+                odd_found = True
 
-        return length + odd_added
+        if odd_found:
+            length += 1
+
+        return length
+        
