@@ -6,7 +6,7 @@ class Solution:
         left = 0
         right = 1
 
-        while left != len(s)-1 and right != len(s)-1:
+        while left < len(s) or right < len(s):
             current = s[left:right]
 
             count_zero = current.count("0")
@@ -14,8 +14,12 @@ class Solution:
 
             if count_zero == count_one:
                 result += count_zero
-                left += 1
+                left += count_zero
+                right += count_zero
             else:
-                right += 1
+                if right >= len(s):
+                    left += 1
+                else:
+                    right += 1
 
         return result
