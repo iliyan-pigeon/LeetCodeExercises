@@ -12,12 +12,12 @@ class Solution:
             count_zero = current.count("0")
             count_one = current.count("1")
 
-            if count_zero >= 1 and count_one >= 1:
-                substrings = min(count_one, count_zero)
-                movement = max(count_one, count_zero)
-                result += substrings
-                left += movement
-                right += movement
+            if count_zero == count_one:
+                result += count_zero
+                left += count_zero
+                right += count_zero
+            elif count_zero >= 1 and count_one >= 1:
+                left += 1
             else:
                 if right >= len(s):
                     left += 1
