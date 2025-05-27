@@ -12,9 +12,9 @@ class Solution:
                     if s[j] in goal:
                         second = j
 
-                        s = s[:first]+s[second]+s[first:second]+s[second+1:]
+                        new_s = s[:first]+s[second]+s[first+1:second]+s[first]+s[second+1:]
 
-                        if s == goal:
+                        if new_s == goal:
                             return True
 
         return False
