@@ -4,11 +4,9 @@ class Solution:
         first = None
         second = None
 
-        # Check for length mismatch
         if len(s) != len(goal):
             return False
 
-        # If strings are identical, check for at least one duplicate character
         if s == goal:
             return len(set(s)) < len(goal)
 
@@ -16,7 +14,7 @@ class Solution:
             if first is None and i in s:
                 first = s.index(i)
             elif i in s:
-                second = i.index(i, first+1)
+                second = i.index(i)
 
                 if first > second:
                     second, first = first, second
