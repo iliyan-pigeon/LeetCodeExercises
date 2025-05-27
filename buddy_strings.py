@@ -4,17 +4,26 @@ class Solution:
         first = None
         second = None
 
-        for i in range(len(s)):
-            if s[i] in goal:
-                first = i
+        # Check for length mismatch
+        if len(s) != len(goal):
+            return False
 
-                for j in range(i + 1, len(s)):
-                    if s[j] in goal:
-                        second = j
+        # If strings are identical, check for at least one duplicate character
+        if s == goal:
+            return len(set(s)) < len(goal)
 
-                        new_s = s[:first]+s[second]+s[first+1:second]+s[first]+s[second+1:]
+        for i in goal:
+            if first is None and i in s:
+                first = s.index(i)
+            elif i in s:
+                second = i.index(i, first+1)
 
-                        if new_s == goal:
-                            return True
+                if first > second:
+                    second, first = first, second
+
+                s_new = s[:first]+s[second]+s[first+1:second]+s[first]+s[second+1:]
+
+                if s_new == goal:
+                    return True
 
         return False
