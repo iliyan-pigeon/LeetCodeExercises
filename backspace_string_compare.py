@@ -7,7 +7,6 @@ class Solution:
 
             if first > 0:
                 first = first-1
-                second -= 1
 
             s = s[:first]+s[second:]
 
@@ -17,7 +16,6 @@ class Solution:
 
             if first > 0:
                 first = first-1
-                second -= 1
 
             t = t[:first] + t[second:]
 
