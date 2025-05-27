@@ -4,11 +4,17 @@ class Solution:
         while "#" in s:
             i = s.index("#")
 
-            s = s[:i-1]+s[i+1:]
+            if i > 0:
+                i = i-1
+
+            s = s[:i]+s[i+1:]
 
         while "#" in t:
             i = t.index("#")
 
-            t = t[:i-1] + t[i+1:]
+            if i > 0:
+                i = i-1
+
+            t = t[:i] + t[i+1:]
 
         return s == t
