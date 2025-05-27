@@ -1,22 +1,20 @@
 class Solution:
     def countBinarySubstrings(self, s: str) -> int:
+        groups = []
+        count = 1
+
+        for i in range(1, len(s)):
+            if s[i] != s[i-1]:
+                groups.append(count)
+                count = 1
+            else:
+                count += 1
+
+        groups.append(count)
 
         result = 0
 
-        zeros = 0
-        ones = 0
-
-        for i, v in enumerate(s):
-            if v == "0":
-                zeros += 1
-            elif v == "1":
-                ones += 1
-
-            if ones == zeros and ones != 0:
-                result += ones
-                if v == "1":
-                    zeros = 0
-                elif v == "0":
-                    ones = 0
+        for i in range(1, len(groups)):
+            result += min(groups[i-1], groups[i])
 
         return result
