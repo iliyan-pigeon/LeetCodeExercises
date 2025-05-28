@@ -1,5 +1,5 @@
 class Solution:
-    def removeOuterParantheses(self, s: str) -> str:
+    def removeOuterParentheses(self, s: str) -> str:
         mapping = {}
         score = 0
 
