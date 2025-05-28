@@ -1,21 +1,22 @@
 class Solution:
     def reserveOnlyLetters(self, s: str) -> str:
         characters = []
-        dash_indexes = []
+        symbol_indexes = {}
 
         result = ""
 
         for i, v in enumerate(s):
-            if v == "-":
-                dash_indexes.append(i)
+            if not v.isalpha():
+                symbol_indexes[i] = v
             else:
                 characters.append(v)
 
         counter = 0
 
-        while characters:
-            if counter in dash_indexes:
-                result += "-"
+        while characters or symbol_indexes:
+            if counter in symbol_indexes:
+                result += symbol_indexes[counter]
+                del symbol_indexes[counter]
             else:
                 result += characters.pop()
 
