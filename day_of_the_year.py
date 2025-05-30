@@ -7,7 +7,8 @@ class Solution:
 
         result = int(day) + months[month]
 
-        if int(year) % 400 == 0 or int(year) % 4 == 0 and int(year) % 100 != 0 and month not in ("01", "02"):
-            result += 1
+        if int(year) % 400 == 0 or int(year) % 4 == 0 and int(year) % 100 != 0:
+            if month not in ["01", "02"]:
+                result += 1
 
         return result
