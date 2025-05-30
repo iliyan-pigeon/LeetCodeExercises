@@ -7,7 +7,7 @@ class Solution:
 
         result = int(day) + months[month]
 
-        if int(year) % 400 == 0:
+        if int(year) % 400 == 0 or int(year) % 4 == 0 and int(year) % 100 != 0:
             result += 1
 
         return result
