@@ -26,3 +26,17 @@ class Solution:
                 index += 1
 
         return s
+
+
+# Solution 3
+class Solution:
+    def removeDuplicates(self, s: str) -> str:
+        no_dups = []
+
+        for ch in s:
+            if no_dups and no_dups[-1] == ch:
+                no_dups.pop()
+            else:
+                no_dups.append(ch)
+
+        return "".join(no_dups)
