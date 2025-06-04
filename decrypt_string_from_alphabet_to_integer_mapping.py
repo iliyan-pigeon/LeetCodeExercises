@@ -1,3 +1,6 @@
 class Solution:
     def freqAlphabets(self, s: str) -> str:
-        pass
+        alphabet = "abcdefjhijklmnopqretuvwxyz"
+        result = ""
+
+        skip = 0
