@@ -10,3 +10,7 @@ class Solution:
             if skip > 0:
                 skip -= 1
                 continue
+
+            if s[i] == "#":
+                result = alphabet[int(s[i-2:i])] + result
+                skip = 2
