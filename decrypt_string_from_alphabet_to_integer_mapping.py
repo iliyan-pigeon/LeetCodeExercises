@@ -14,3 +14,7 @@ class Solution:
             if s[i] == "#":
                 result = alphabet[int(s[i-2:i])] + result
                 skip = 2
+            else:
+                result = alphabet[int(s[i])] + result
+
+        return result
