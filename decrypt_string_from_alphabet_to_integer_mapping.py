@@ -2,7 +2,6 @@ class Solution:
     def freqAlphabets(self, s: str) -> str:
         alphabet = "#abcdefghijklmnopqrstuvwxyz"
         result = ""
-
         skip = 0
 
         for i in range(len(s)-1, -1, -1):
