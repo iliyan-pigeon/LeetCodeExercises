@@ -6,8 +6,9 @@ class Solution:
         operations = 0
 
         for op in logs:
-            if op == "../" and operations > 0:
-                operations -= 1
+            if op == "../":
+                if operations > 0:
+                    operations -= 1
             elif op != "./":
                 operations += 1
 
