@@ -4,7 +4,16 @@ class Solution:
             return str(n)
 
         else:
-            n = list(str(n))
-            n.insert(-3, ".")
+            result = ""
+            n = str(n)
+            counter = 0
 
-            return "".join(n)
+            for i in range(len(n)-1, -1, -1):
+                result += n[i]
+                counter += 1
+
+                if counter == 3:
+                    result += "."
+                    counter = 0
+
+        return result[::-1]
