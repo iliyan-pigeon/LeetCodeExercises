@@ -12,7 +12,7 @@ class Solution:
                 result += n[i]
                 counter += 1
 
-                if counter == 3:
+                if counter == 3 and i > 0:
                     result += "."
                     counter = 0
 
