@@ -4,13 +4,19 @@ class Solution:
 
         for i, ch in enumerate(s):
             if ch == "?":
-                if i-1 >= 0:
-                    if ord(s[i-1]) == character:
-                        character += 1
-                if i+1 < len(s):
-                    if ord(s[i+1]) == character:
-                        character += 1
+                while True:
+                    if character == 123:
+                        character = 97
+                    if i-1 >= 0:
+                        if ord(s[i-1]) == character:
+                            character += 1
+                            continue
+                    if i+1 < len(s):
+                        if ord(s[i+1]) == character:
+                            character += 1
+                            continue
+                    break
 
-                s = s.replace("?", chr(character))
+                s = s.replace("?", chr(character), 1)
 
         return s
