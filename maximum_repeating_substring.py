@@ -1,3 +1,4 @@
+# Solution 1
 class Solution:
     def maxRepeating(self, sequence: str, word: str) -> int:
         if word not in sequence:
@@ -20,3 +21,19 @@ class Solution:
                     consecutive = 0
 
         return result
+
+
+# Solution 2
+class Solution:
+    def maxRepeating(self, sequence: str, word: str) -> int:
+        n = len(sequence)
+        m = len(word)
+        dp = [0] * (n + 1)
+        max_repeat = 0
+
+        for i in range(m, n + 1):
+            if sequence[i - m:i] == word:
+                dp[i] = dp[i - m] + 1
+                max_repeat = max(max_repeat, dp[i])
+
+        return max_repeat
