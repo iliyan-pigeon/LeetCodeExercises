@@ -27,6 +27,9 @@ class Solution:
                         substrings.pop(index)
 
         result = sorted(results, key=len) if results else ""
-        result = sorted(results)[0] if results else ""
+
+        max_length = len(result[-1])
+
+        result = sorted([i for i in result if len(i) == max_length])[0] if results else ""
 
         return result
