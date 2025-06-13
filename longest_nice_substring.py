@@ -26,7 +26,7 @@ class Solution:
                     else:
                         substrings.pop(index)
 
-        if results == "":
+        if not results:
             return ""
 
         results = sorted(results, key=len) if results else ""
@@ -39,7 +39,7 @@ class Solution:
         result = None
 
         for i in results:
-            current = s.index(i[0])
+            current = s.index(i)
             if current < pos:
                 pos = current
                 result = i
