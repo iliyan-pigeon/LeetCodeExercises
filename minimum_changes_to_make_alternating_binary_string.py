@@ -1,15 +1,18 @@
 class Solution:
     def minOperations(self, s: str) -> int:
-        result = 0
-        s = list(s)
+        result_one = 0
+        result_two = 0
 
-        for i in range(len(s)-1):
-            if s[i] == s[i+1]:
-                result += 1
+        for i in range(len(s)):
+            if i % 2 == 0:
+                if s[i] == "1":
+                    result_one += 1
+                elif s[i] == "0":
+                    result_two += 1
+            else:
+                if s[i] == "1":
+                    result_two += 1
+                elif s[i] == "0":
+                    result_one += 1
 
-                if s[i+1] == "0":
-                    s[i+1] = "1"
-                else:
-                    s[i+1] = "0"
-
-        return result
+        return min(result_one, result_two)
