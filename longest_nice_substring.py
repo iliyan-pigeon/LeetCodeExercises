@@ -26,10 +26,22 @@ class Solution:
                     else:
                         substrings.pop(index)
 
-        result = sorted(results, key=len) if results else ""
+        if results == "":
+            return ""
 
-        max_length = len(result[-1])
+        results = sorted(results, key=len) if results else ""
 
-        result = sorted([i for i in result if len(i) == max_length])[0] if results else ""
+        max_length = len(results[-1])
+
+        results = sorted([i for i in results if len(i) == max_length])
+
+        pos = len(s)
+        result = None
+
+        for i in results:
+            current = s.index(i[0])
+            if current < pos:
+                pos = current
+                result = i
 
         return result
