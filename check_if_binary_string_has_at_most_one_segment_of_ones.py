@@ -1,8 +1,12 @@
 class Solution:
     def checkOnesSegment(self, s: str) -> bool:
 
-        for i in range(len(s)-1):
-            if s[i] == "1" and s[i+1] == "1":
-                return True
+        ones = sorted([i for i, v in enumerate(s) if v == "1"])
+
+        if not ones:
+            return False
+
+        if ones == sorted([i for i in range(ones[0], ones[-1]+1)]):
+            return True
 
         return False
