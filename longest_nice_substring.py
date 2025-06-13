@@ -26,6 +26,7 @@ class Solution:
                     else:
                         substrings.pop(index)
 
-        result = sorted(results, key=len)[0] if results else ""
+        result = sorted(results, key=len) if results else ""
+        result = sorted(results)[0] if results else ""
 
         return result
