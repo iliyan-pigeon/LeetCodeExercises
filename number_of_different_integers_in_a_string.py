@@ -7,7 +7,10 @@ class Solution:
             if ch.isnumeric():
                 current += ch
             elif ch.isalpha() and current:
-                integers.add(current)
+                integers.add(int(current))
                 current = ""
+
+        if current:
+            integers.add(int(current))
 
         return len(integers)
