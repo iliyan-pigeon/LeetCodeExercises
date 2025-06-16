@@ -1,6 +1,9 @@
 from typing import List
+from collections import Counter
 
 
 class Solution:
     def makeEqual(self, words: List[str]) -> bool:
-        return len("".join(words)) % len(words) == 0
+        result = all([i == len(words) for i in Counter("".join(words)).values()])
+
+        return result
