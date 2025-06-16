@@ -1,5 +1,5 @@
 class Solution:
-    def canBeTypeWords(self, text: str, brokenLetters: str) -> int:
+    def canBeTypedWords(self, text: str, brokenLetters: str) -> int:
 
         result = 0
 
