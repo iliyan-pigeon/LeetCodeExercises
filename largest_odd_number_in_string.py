@@ -5,8 +5,8 @@ class Solution:
         while not odd_number:
             if num == "":
                 return ""
-            
-            if int(num) % 2 != 0:
+
+            if int(num[-1]) % 2 != 0:
                 odd_number = num
 
             num = num[:-1]
