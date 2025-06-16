@@ -4,7 +4,7 @@ class Solution:
         result = [0] * len(s)
 
         for ch in s:
-            index = int(ch[-1]) -1
+            index = int(ch[-1]) - 1
             result[index] = ch[:-1]
 
-        return result
+        return " ".join(result)
