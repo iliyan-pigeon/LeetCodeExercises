@@ -3,16 +3,16 @@ class Solution:
         valid_substrings = []
         vowels = "aeiou"
 
-        for i in range(len(word)-len(vowels)):
+        for i in range(len(word)):
             right = len(vowels)+i
             current = word[i:right]
 
-            while all([True if i in vowels else False for i in current]):
-                if current not in valid_substrings and all([True if i in current else False for i in vowels]):
+            while all([True if i in vowels else False for i in current]) and right <= len(word):
+                if all([True if i in current else False for i in vowels]):
                     valid_substrings.append(current)
 
                 right += 1
                 current = word[i:right]
 
 
-        return valid_substrings
+        return len(valid_substrings)
