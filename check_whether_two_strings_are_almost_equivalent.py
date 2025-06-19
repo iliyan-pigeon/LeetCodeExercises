@@ -12,4 +12,10 @@ class Solution:
             elif abs(v - word2[k]) > 3:
                 return False
 
+        for k, v in word2.items():
+            if k not in word1 and v > 3:
+                return False
+            elif abs(v - word1[k]) > 3:
+                return False
+
         return True
