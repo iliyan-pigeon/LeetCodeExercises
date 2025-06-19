@@ -14,7 +14,7 @@ class Solution:
             current += s[i]
 
         if len(current) < 3:
-            current = f"{current}{fill}"
+            current = f"{current}{fill*(3-len(current))}"
 
         result.append(current)
 
