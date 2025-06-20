@@ -1,6 +1,6 @@
 class Solution:
     def largestGoodInteger(self, num: str) -> str:
-        result = None
+        result = ""
         current = ""
 
         for ch in num:
@@ -12,7 +12,7 @@ class Solution:
                 current = ch
 
             if len(current) == 3:
-                if result is None:
+                if result is "":
                     result = current
                     current = ""
                 elif int(result) < int(current):
