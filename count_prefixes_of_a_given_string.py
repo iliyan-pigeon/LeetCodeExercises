@@ -1,0 +1,6 @@
+from typing import List
+
+
+class Solution:
+    def countPrefixes(self, words: List[str], s: str) -> int:
+        return len([i for i in words if i.startswith(s)])
