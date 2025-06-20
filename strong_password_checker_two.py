@@ -5,7 +5,7 @@ class Solution:
 
         criteria_met = []
 
-        special_characters = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+"]
+        special_characters = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "+"]
         previous_character = ""
 
         for ch in password:
