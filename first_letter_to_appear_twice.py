@@ -1,5 +1,5 @@
 class Solution:
-    def repeatedCharacters(self, s: str) -> str:
+    def repeatedCharacter(self, s: str) -> str:
         appeared = ""
 
         for ch in s:
