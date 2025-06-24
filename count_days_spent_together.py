@@ -14,13 +14,19 @@ class Solution:
 
         months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-        alice_arrive = sum(months[:int(alice_arrive_month)])+alice_arrive_day
-        bob_arrive = sum(months[:int(bob_arrive_month)])+bob_arrive_day
+        alice_arrive = sum(months[:int(alice_arrive_month)-1])+alice_arrive_day
+        bob_arrive = sum(months[:int(bob_arrive_month)-1])+bob_arrive_day
 
-        alice_leave = sum(months[:int(alice_leave_month)])+alice_leave_day
-        bob_leave = sum(months[:int(bob_leave_month)])+bob_leave_day
+        alice_leave = sum(months[:int(alice_leave_month)-1])+alice_leave_day
+        bob_leave = sum(months[:int(bob_leave_month)-1])+bob_leave_day
 
-        result = min(alice_leave, bob_leave) - max(alice_arrive, bob_arrive)
+        leave = min(alice_leave, bob_leave)
+        arrive = max(alice_arrive, bob_arrive)
+
+        if leave == arrive:
+            return 1
+
+        result = leave - arrive
 
         if result <= 0:
             return 0
