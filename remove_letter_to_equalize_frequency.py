@@ -3,16 +3,10 @@ from collections import Counter
 
 class Solution:
     def equalFrequency(self, word: str) -> bool:
-        amounts = Counter(word)
+        for i in range(len(word)):
+            current = word[:i]+word[i+1:]
 
-        unique_amounts = []
-
-        for v in amounts.values():
-            if v not in unique_amounts:
-                unique_amounts.append(v)
-
-        if len(unique_amounts) == 2:
-            if abs(unique_amounts[0] - unique_amounts[1]) == 1:
+            if set([i for i in Counter(current).values()]) == 1:
                 return True
 
         return False
