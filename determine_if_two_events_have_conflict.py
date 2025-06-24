@@ -28,5 +28,9 @@ class Solution:
             return True
         if event_one_start <= event_two_end <= event_one_end:
             return True
+        if event_one_start >= event_two_start and event_one_end <= event_two_end:
+            return True
+        if event_two_start >= event_one_start and event_two_end <= event_one_end:
+            return True
 
         return False
