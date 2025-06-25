@@ -19,7 +19,7 @@ class Solution:
                     ones = 0
                     zeros = 0
 
-                if zeros == ones and ones+zeros > longest:
-                    longest = ones+zeros
+            if zeros > 0 and ones > 0 and ones*2 > longest:
+                longest = ones*2
 
         return longest
