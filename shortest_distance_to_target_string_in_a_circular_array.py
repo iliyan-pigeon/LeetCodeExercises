@@ -1,6 +1,7 @@
 from typing import List
 
 
+# Solution 1
 class Solution:
     def closestTarget(self, words: List[str], target: str, startIndex: int) -> int:
         shortest_path = 0
@@ -31,3 +32,16 @@ class Solution:
                 right_finished = True
 
         return -1
+
+
+# Solution 2
+class Solution:
+    def closestTarget(self, words: List[str], target: str, startIndex: int) -> int:
+        ans = float('inf')
+        n = len(words)
+
+        for i, word in enumerate(words):
+            if word == target:
+                ans = min(ans, abs(startIndex - i), n - abs(startIndex - i))
+
+        return ans if ans != float('inf') else -1
