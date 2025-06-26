@@ -6,7 +6,7 @@ class Solution:
         pairs = 0
 
         for ch in words:
-            if ch[::-1] in words:
+            if ch[::-1] in words and ch != ch[::-1]:
                 pairs += 1
 
         return pairs // 2
