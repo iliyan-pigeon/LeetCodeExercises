@@ -7,3 +7,5 @@ class Solution:
                 final_string = final_string[::-1]
             else:
                 final_string += ch
+
+        return final_string
