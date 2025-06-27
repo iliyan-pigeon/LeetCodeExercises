@@ -15,7 +15,7 @@ class Solution:
                 s3 = s3[:-1]
                 operations += 1
 
-        while s1 != s2 != s3:
+        while len({s1, s2, s3}) != 1:
             s1 = s1[:-1]
             s2 = s2[:-1]
             s3 = s3[:-1]
