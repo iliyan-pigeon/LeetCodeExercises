@@ -7,7 +7,7 @@ class Solution:
         last_element_added = groups[0]
 
         for i in range(1, len(groups)):
-            if last_element_added !=  groups[i]:
+            if last_element_added != groups[i]:
                 result.append(words[i])
                 last_element_added = groups[i]
 
