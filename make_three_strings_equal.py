@@ -1,5 +1,5 @@
 class Solution:
-    def findMinimumOprations(self, s1: str, s2: str, s3: str) -> int:
+    def findMinimumOperations(self, s1: str, s2: str, s3: str) -> int:
         min_length = min(len(s1), len(s2), len(s3))
 
         operations = 0
@@ -15,4 +15,13 @@ class Solution:
                 s3 = s3[:-1]
                 operations += 1
 
-        return operations if s1 == s2 == s3 else -1
+        while s1 != s2 != s3:
+            s1 = s1[:-1]
+            s2 = s2[:-1]
+            s3 = s3[:-1]
+            operations += 3
+
+            if "" in (s1, s2, s3):
+                return -1
+
+        return operations
