@@ -10,10 +10,10 @@ class Solution:
         constant = False
 
         for ch in word:
-            if ch in "aeiou" and ch.isalpha():
+            if ch.lower() in "aeiou" and ch.isalpha():
                 vowel = True
 
-            elif ch not in "aeiou" and ch.isalpha():
+            elif ch.lower() not in "aeiou" and ch.isalpha():
                 constant = True
 
             if constant and vowel:
