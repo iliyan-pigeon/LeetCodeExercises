@@ -1,0 +1,9 @@
+class Solution:
+    def numberOfSpecialChars(self, word: str) -> int:
+        special_chars = 0
+
+        for ch in set(word):
+            if ch.islower() and ch.upper() in word:
+                special_chars += 1
+
+        return special_chars
