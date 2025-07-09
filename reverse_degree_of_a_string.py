@@ -1,3 +1,4 @@
+# Solution 1
 class Solution:
     def reverseDegree(self, s: str) -> int:
         degrees = []
@@ -10,3 +11,14 @@ class Solution:
             degrees.append(degree)
 
         return sum(degrees)
+
+
+# Solution 2
+class Solution:
+    def reverseDegree(self, s: str) -> int:
+        ans = 0
+        for i in range(len(s)):
+            x = ord(s[i])
+            x = abs(x-122) + 1
+            ans += (x * (i+1))
+        return ans
