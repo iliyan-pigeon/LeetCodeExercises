@@ -1,11 +1,11 @@
 class Solution:
     def generateTag(self, caption: str) -> str:
-        caption = caption.split(" ")
+        caption = caption.strip().split(" ")
 
         result = "#"
         result += caption[0].lower()
 
         for i in range(1, len(caption)):
-            result += f"{caption[i][0].upper()}{caption[i][1:].lower()}"
+            result += caption[i].capitalize()
 
-        return result[:101]
+        return result[:100]
