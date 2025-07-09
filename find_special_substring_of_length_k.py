@@ -4,9 +4,15 @@ class Solution:
             current = s[i:i + k]
 
             if len(set(current)) == 1:
-                if i == 0 and s[i + k] != current[0] or \
-                        s[i] != current[0] and i + k == len(s) or \
-                        s[i] != current[0] and s[i + k] != current[0]:
+                if i == 0 and i + k == len(s):
+                    return True
+                elif i == 0:
+                    if s[i+k] != current[0]:
+                        return True
+                elif i+k == len(s):
+                    if s[i-1] != current[0]:
+                        return True
+                elif s[i-1] != current[0] and s[i+k] != current[0]:
                     return True
 
         return False
