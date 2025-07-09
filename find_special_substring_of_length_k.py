@@ -1,7 +1,12 @@
 class Solution:
     def hasSpecialSubstring(self, s: str, k: int) -> bool:
-        for i in set(s):
-            if i * k in s and i * (k+1) not in s and i * (k+2) not in s:
-                return True
+        for i in range(len(s)):
+            current = s[i:i + k]
+
+            if len(set(current)) == 1:
+                if i == 0 and s[i + k] != current[0] or \
+                        s[i] != current[0] and i + k == len(s) or \
+                        s[i] != current[0] and s[i + k] != current[0]:
+                    return True
 
         return False
