@@ -1,6 +1,6 @@
 class Solution:
     def hasSpecialSubstring(self, s: str, k: int) -> bool:
-        for i in range(len(s)):
+        for i in range(len(s)-k+1):
             current = s[i:i + k]
 
             if len(set(current)) == 1:
