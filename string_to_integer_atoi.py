@@ -6,6 +6,7 @@ class Solution:
 
         for ch in s.strip():
             if ch == "+" and not digit_appeared:
+                digit_appeared = True
                 continue
             if digit_appeared and ch == "-":
                 break
