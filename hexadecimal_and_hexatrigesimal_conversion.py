@@ -20,4 +20,10 @@ class Solution:
         hexadecimal = hex(n*n)[2:]
         hexatrigesimal = int_to_base36(n**3)
 
-        return f"{hexadecimal}{hexatrigesimal}"
+        result = f"{hexadecimal}{hexatrigesimal}"
+
+        for ch in result:
+            if ch.islower():
+                result = result.replace(ch, ch.upper(), 1)
+
+        return result
