@@ -5,10 +5,13 @@ class Solution:
         digit = ""
 
         for ch in s.strip():
+            if ch == "+" and not digit_appeared:
+                continue
             if digit_appeared and ch == "-":
                 break
             elif ch == "-":
                 sign = "-"
+                digit_appeared = True
                 continue
             elif not ch.isnumeric():
                 break
@@ -28,4 +31,5 @@ class Solution:
 
         if int(digit) > 2**31-1:
                 return 2**31-1
+
         return int(digit)
