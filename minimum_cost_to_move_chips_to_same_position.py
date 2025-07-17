@@ -3,5 +3,4 @@ from typing import List
 
 class Solution:
     def minCostToMoveChips(self, position: List[int]) -> int:
-        pass
-    
+        return min(len([i for i in range(len(position)) if i % 2 == 0]), len([i for i in range(len(position)) if i % 2 != 0]))
