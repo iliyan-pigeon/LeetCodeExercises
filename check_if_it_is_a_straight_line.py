@@ -9,6 +9,12 @@ class Solution:
         first_distance = 0
         second_distance = 0
 
+        first = set([i[0] for i in coordinates])
+        second = set([i[1] for i in coordinates])
+
+        if len(first) == 1 or len(second) == 1:
+            return True
+
         for i in range(1, len(coordinates)):
             if i == 1:
                 first_distance = coordinates[i][0] - previous[0]
