@@ -1,27 +1,28 @@
 from typing import List
 
-
 class Solution:
     def checkStraightLine(self, coordinates: List[List[int]]) -> bool:
-
-        coordinates.sort()
-        previous = coordinates[0]
-        first_distance = 0
-        second_distance = 0
-
-        first = set([i[0] for i in coordinates])
-        second = set([i[1] for i in coordinates])
-
-        if len(first) == 1 or len(second) == 1:
+        # Calculate the initial slope using the first two points
+        x0, y0 = coordinates[0]
+        x1, y1 = coordinates[1]
+        
+        # Handle vertical line case
+        if x1 - x0 == 0:
+            for i in range(2, len(coordinates)):
+                if coordinates[i][0] != x0:
+                    return False
             return True
-
-        for i in range(1, len(coordinates)):
-            if i == 1:
-                first_distance = coordinates[i][0] - previous[0]
-                second_distance = coordinates[i][1] - previous[1]
-            if coordinates[i][0] - previous[0] > first_distance or \
-                    coordinates[i][1] - previous[1] > second_distance:
+        
+        # Calculate the initial slope
+        initial_slope = (y1 - y0) / (x1 - x0)
+        
+        # Check if all other points have the same slope
+        for i in range(2, len(coordinates)):
+            x, y = coordinates[i]
+            if x - x0 == 0:
+                return False  # Vertical line check
+            slope = (y - y0) / (x - x0)
+            if slope != initial_slope:
                 return False
-            previous = coordinates[i]
-
+        
         return True
