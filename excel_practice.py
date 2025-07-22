@@ -41,3 +41,79 @@ def convert_excel(file_path, status_label):
 
     except Exception as e:
         status_label.config(text=f"Error: {str(e)}", fg="red")
+
+
+# New option
+import openpyxl
+import xlwings as xw
+import os
+import copy
+
+def convert_excel(file_path, status_label):
+    try:
+        status_label.config(text="Processing...", fg="blue")
+
+        # Load workbook with openpyxl
+        wb = openpyxl.load_workbook(file_path)
+
+        # Process all sheets except "indicators" using openpyxl
+        for sheet_name in wb.sheetnames:
+            if sheet_name == "indicators":
+                continue
+            ws = wb[sheet_name]
+            for row in ws.iter_rows():
+                for cell in row:
+                    if cell.value is None or (isinstance(cell.value, str) and cell.value.startswith('=')):
+                        continue
+                    if '0%' in cell.number_format or '%' in cell.number_format:
+                        continue
+                    if isinstance(cell.value, (int, float)):
+                        cell.value /= 1.95583
+                        # Reapply formatting
+                        cell.font = copy.copy(cell.font)
+                        cell.fill = copy.copy(cell.fill)
+                        cell.border = copy.copy(cell.border)
+                        cell.alignment = copy.copy(cell.alignment)
+                        cell.number_format = copy.copy(cell.number_format)
+                        cell.protection = copy.copy(cell.protection)
+
+        # Save the openpyxl-processed part to a temporary file
+        base = os.path.basename(file_path)
+        name, ext = os.path.splitext(base)
+        temp_path = os.path.join(os.getcwd(), f"{name}_temp{ext}")
+        wb.save(temp_path)
+
+        # Reopen the saved file with xlwings to process "indicators" sheet
+        app = xw.App(visible=False)
+        wb_xlw = app.books.open(temp_path)
+
+        try:
+            sheet = wb_xlw.sheets['indicators']
+        except Exception:
+            sheet = None
+
+        if sheet:
+            for row in sheet.used_range.rows:
+                for cell in row:
+                    value = cell.value
+                    if value is None or (isinstance(value, str) and value.startswith('=')):
+                        continue
+                    if cell.number_format and ('%' in cell.number_format or '0%' in cell.number_format):
+                        continue
+                    if isinstance(value, (int, float)):
+                        cell.value = value / 1.95583
+
+        # Save the final version
+        final_path = os.path.join(os.getcwd(), f"{name}_EUR{ext}")
+        wb_xlw.save(final_path)
+        wb_xlw.close()
+        app.quit()
+
+        # Delete temp file if needed
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+
+        status_label.config(text="Conversion complete", fg="green")
+
+    except Exception as e:
+        status_label.config(text=f"Error: {str(e)}", fg="red")
