@@ -53,7 +53,7 @@ def convert_excel(file_path, status_label):
     try:
         status_label.config(text="Processing...", fg="blue")
 
-        # Step 1: Process all sheets except "indicators" with openpyxl
+        # Step 1: Process all sheets except "indicators" using openpyxl
         wb_in = openpyxl.load_workbook(file_path)
         wb_out = openpyxl.Workbook()
         wb_out.remove(wb_out.active)  # Remove default sheet
@@ -65,26 +65,43 @@ def convert_excel(file_path, status_label):
             ws_in = wb_in[sheet_name]
             ws_out = wb_out.create_sheet(title=sheet_name)
 
-            # Copy merged cells
-            if ws_in.merged_cells.ranges:
-                for merged_range in ws_in.merged_cells.ranges:
-                    ws_out.merge_cells(str(merged_range))
+            # Copy sheet-level properties
+            ws_out.sheet_properties.tabColor = ws_in.sheet_properties.tabColor
+            ws_out.freeze_panes = ws_in.freeze_panes
+            if ws_in.auto_filter and ws_in.auto_filter.ref:
+                ws_out.auto_filter.ref = ws_in.auto_filter.ref
 
-            # Copy cell values and formatting
+            # Copy column dimensions
+            for col_letter, dim in ws_in.column_dimensions.items():
+                ws_out.column_dimensions[col_letter].width = dim.width
+                ws_out.column_dimensions[col_letter].hidden = dim.hidden
+                ws_out.column_dimensions[col_letter].outlineLevel = dim.outlineLevel
+
+            # Copy row dimensions
+            for row_idx, dim in ws_in.row_dimensions.items():
+                ws_out.row_dimensions[row_idx].height = dim.height
+                ws_out.row_dimensions[row_idx].hidden = dim.hidden
+                ws_out.row_dimensions[row_idx].outlineLevel = dim.outlineLevel
+
+            # Copy merged cells
+            for merged_range in ws_in.merged_cells.ranges:
+                ws_out.merge_cells(str(merged_range))
+
+            # Copy cell values and styles
             for row in ws_in.iter_rows():
                 for cell in row:
                     if isinstance(cell, MergedCell):
-                        continue  # skip non-master merged cells
+                        continue
 
                     new_cell = ws_out.cell(row=cell.row, column=cell.column)
                     new_cell.value = cell.value
 
-                    # Convert numeric values (if not percent or formula)
+                    # Convert numeric values
                     if cell.value is not None and isinstance(cell.value, (int, float)) and \
                        not (cell.number_format and ('%' in cell.number_format or '0%' in cell.number_format)):
                         new_cell.value = cell.value / 1.95583
 
-                    # Copy formatting
+                    # Copy styles
                     new_cell.font = copy.copy(cell.font)
                     new_cell.fill = copy.copy(cell.fill)
                     new_cell.border = copy.copy(cell.border)
@@ -92,18 +109,26 @@ def convert_excel(file_path, status_label):
                     new_cell.number_format = copy.copy(cell.number_format)
                     new_cell.protection = copy.copy(cell.protection)
 
-        # Save temporary file without indicators sheet
+                    # Copy comment
+                    if cell.comment:
+                        new_cell.comment = copy.copy(cell.comment)
+
+                    # Copy hyperlink
+                    if cell.hyperlink:
+                        new_cell.hyperlink = cell.hyperlink
+
+        # Save temporary file without "indicators"
         temp_path = os.path.join(os.getcwd(), "no_indicators.xlsx")
         wb_out.save(temp_path)
 
-        # Step 2: Process "indicators" sheet only using xlwings
+        # Step 2: Process "indicators" using xlwings and append to final workbook
         app = xw.App(visible=False)
         wb_original = app.books.open(file_path)
         wb_temp = app.books.open(temp_path)
 
         try:
             sheet = wb_original.sheets['indicators']
-            # Convert numeric values in-place in indicators
+            # Convert numeric values while preserving flags
             for row in sheet.used_range.rows:
                 for cell in row:
                     val = cell.value
@@ -114,14 +139,14 @@ def convert_excel(file_path, status_label):
                     if isinstance(val, (int, float)):
                         cell.value = val / 1.95583
         except Exception as e:
-            status_label.config(text=f"Error processing 'indicators': {str(e)}", fg="red")
             sheet = None
+            status_label.config(text=f"Error processing 'indicators': {str(e)}", fg="red")
 
-        # Copy "indicators" sheet to the temp file
         if sheet:
+            # Copy "indicators" to end of processed workbook
             sheet.api.Copy(After=wb_temp.sheets[wb_temp.sheets.count - 1].api)
 
-        # Step 3: Save final file
+        # Save final file
         base = os.path.basename(file_path)
         name, ext = os.path.splitext(base)
         final_path = os.path.join(os.getcwd(), f"{name}_EUR{ext}")
@@ -131,7 +156,6 @@ def convert_excel(file_path, status_label):
         wb_original.close()
         wb_temp.close()
         app.quit()
-
         if os.path.exists(temp_path):
             os.remove(temp_path)
 
@@ -139,6 +163,7 @@ def convert_excel(file_path, status_label):
 
     except Exception as e:
         status_label.config(text=f"Error: {str(e)}", fg="red")
+
 
 
 
