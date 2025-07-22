@@ -57,23 +57,45 @@ def convert_excel(file_path, status_label):
     try:
         status_label.config(text="Processing...", fg="blue")
 
-        # Load workbook via openpyxl to extract numeric values (no saving!)
+        # Step 1: Load workbook via openpyxl
         wb_openpyxl = openpyxl.load_workbook(file_path, data_only=False)
 
-        # Open the same file with xlwings (preserves formatting/icons)
+        converted_data = {}
+
+        # Step 2: Process all sheets except "indicators"
+        for sheet_name in wb_openpyxl.sheetnames:
+            if sheet_name == "indicators":
+                continue
+
+            ws = wb_openpyxl[sheet_name]
+            sheet_data = []
+
+            for row in ws.iter_rows():
+                row_data = []
+                for cell in row:
+                    val = cell.value
+                    if val is None or (isinstance(val, str) and val.startswith('=')):
+                        row_data.append(val)
+                        continue
+                    if '0%' in cell.number_format or '%' in cell.number_format:
+                        row_data.append(val)
+                        continue
+                    if isinstance(val, (int, float)):
+                        row_data.append(val / 1.95583)
+                    else:
+                        row_data.append(val)
+                sheet_data.append(row_data)
+
+            converted_data[sheet_name] = sheet_data
+
+        # Step 3: Open original file in Excel with xlwings
         app = xw.App(visible=False)
         wb_xlw = app.books.open(file_path)
 
-        for sheet_name in wb_openpyxl.sheetnames:
-            ws_openpyxl = wb_openpyxl[sheet_name]
-            try:
-                ws_xlw = wb_xlw.sheets[sheet_name]
-            except Exception:
-                continue
-
-            if sheet_name == "indicators":
-                # Process via xlwings to preserve icon sets
-                for row in ws_xlw.used_range.rows:
+        for sheet in wb_xlw.sheets:
+            if sheet.name == "indicators":
+                # Process indicators in-place
+                for row in sheet.used_range.rows:
                     for cell in row:
                         val = cell.value
                         if val is None or (isinstance(val, str) and val.startswith('=')):
@@ -83,20 +105,11 @@ def convert_excel(file_path, status_label):
                         if isinstance(val, (int, float)):
                             cell.value = val / 1.95583
             else:
-                # Update numeric cells using values from openpyxl
-                for row in ws_openpyxl.iter_rows():
-                    for cell in row:
-                        val = cell.value
-                        addr = cell.coordinate
-                        if val is None or (isinstance(val, str) and val.startswith('=')):
-                            continue
-                        if '0%' in cell.number_format or '%' in cell.number_format:
-                            continue
-                        if isinstance(val, (int, float)):
-                            converted = val / 1.95583
-                            ws_xlw.range(addr).value = converted
+                # Bulk update non-indicators sheets
+                if sheet.name in converted_data:
+                    sheet.range("A1").value = converted_data[sheet.name]
 
-        # Save final version
+        # Step 4: Save final version
         base = os.path.basename(file_path)
         name, ext = os.path.splitext(base)
         final_path = os.path.join(os.getcwd(), f"{name}_EUR{ext}")
@@ -108,4 +121,5 @@ def convert_excel(file_path, status_label):
 
     except Exception as e:
         status_label.config(text=f"Error: {str(e)}", fg="red")
+
 
