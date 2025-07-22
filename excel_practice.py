@@ -43,16 +43,11 @@ def convert_excel(file_path, status_label):
         status_label.config(text=f"Error: {str(e)}", fg="red")
 
 
-# New option
 import openpyxl
 import xlwings as xw
 import os
 import copy
-
-import openpyxl
-import xlwings as xw
-import os
-import copy
+from openpyxl.cell.cell import MergedCell
 
 def convert_excel(file_path, status_label):
     try:
@@ -66,11 +61,22 @@ def convert_excel(file_path, status_label):
         for sheet_name in wb_in.sheetnames:
             if sheet_name == "indicators":
                 continue
+
             ws_in = wb_in[sheet_name]
             ws_out = wb_out.create_sheet(title=sheet_name)
+
+            # Copy merged cells
+            if ws_in.merged_cells.ranges:
+                for merged_range in ws_in.merged_cells.ranges:
+                    ws_out.merge_cells(str(merged_range))
+
+            # Copy cell values and formatting
             for row in ws_in.iter_rows():
                 for cell in row:
-                    new_cell = ws_out.cell(row=cell.row, column=cell.col_idx)
+                    if isinstance(cell, MergedCell):
+                        continue  # skip non-master merged cells
+
+                    new_cell = ws_out.cell(row=cell.row, column=cell.column)
                     new_cell.value = cell.value
 
                     # Convert numeric values (if not percent or formula)
@@ -78,7 +84,7 @@ def convert_excel(file_path, status_label):
                        not (cell.number_format and ('%' in cell.number_format or '0%' in cell.number_format)):
                         new_cell.value = cell.value / 1.95583
 
-                    # Copy formatting (optional)
+                    # Copy formatting
                     new_cell.font = copy.copy(cell.font)
                     new_cell.fill = copy.copy(cell.fill)
                     new_cell.border = copy.copy(cell.border)
@@ -86,18 +92,18 @@ def convert_excel(file_path, status_label):
                     new_cell.number_format = copy.copy(cell.number_format)
                     new_cell.protection = copy.copy(cell.protection)
 
-        # Save processed workbook without indicators
+        # Save temporary file without indicators sheet
         temp_path = os.path.join(os.getcwd(), "no_indicators.xlsx")
         wb_out.save(temp_path)
 
-        # Step 2: Process only the "indicators" sheet with xlwings
+        # Step 2: Process "indicators" sheet only using xlwings
         app = xw.App(visible=False)
         wb_original = app.books.open(file_path)
         wb_temp = app.books.open(temp_path)
 
         try:
             sheet = wb_original.sheets['indicators']
-            # Process numeric values in "indicators"
+            # Convert numeric values in-place in indicators
             for row in sheet.used_range.rows:
                 for cell in row:
                     val = cell.value
@@ -108,14 +114,14 @@ def convert_excel(file_path, status_label):
                     if isinstance(val, (int, float)):
                         cell.value = val / 1.95583
         except Exception as e:
+            status_label.config(text=f"Error processing 'indicators': {str(e)}", fg="red")
             sheet = None
-            print("Could not process 'indicators':", str(e))
 
+        # Copy "indicators" sheet to the temp file
         if sheet:
-            # Copy "indicators" sheet into the processed workbook
-            sheet.api.Copy(Before=wb_temp.sheets[0].api)
+            sheet.api.Copy(After=wb_temp.sheets[wb_temp.sheets.count - 1].api)
 
-        # Save the final workbook
+        # Step 3: Save final file
         base = os.path.basename(file_path)
         name, ext = os.path.splitext(base)
         final_path = os.path.join(os.getcwd(), f"{name}_EUR{ext}")
@@ -126,7 +132,6 @@ def convert_excel(file_path, status_label):
         wb_temp.close()
         app.quit()
 
-        # Remove temporary file
         if os.path.exists(temp_path):
             os.remove(temp_path)
 
@@ -134,6 +139,7 @@ def convert_excel(file_path, status_label):
 
     except Exception as e:
         status_label.config(text=f"Error: {str(e)}", fg="red")
+
 
 
 
