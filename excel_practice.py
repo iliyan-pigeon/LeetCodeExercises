@@ -49,71 +49,63 @@ import xlwings as xw
 import os
 import copy
 
+import openpyxl
+import xlwings as xw
+import os
+
 def convert_excel(file_path, status_label):
     try:
         status_label.config(text="Processing...", fg="blue")
 
-        # Load workbook with openpyxl
-        wb = openpyxl.load_workbook(file_path)
+        # Load workbook via openpyxl to extract numeric values (no saving!)
+        wb_openpyxl = openpyxl.load_workbook(file_path, data_only=False)
 
-        # Process all sheets except "indicators" using openpyxl
-        for sheet_name in wb.sheetnames:
-            if sheet_name == "indicators":
+        # Open the same file with xlwings (preserves formatting/icons)
+        app = xw.App(visible=False)
+        wb_xlw = app.books.open(file_path)
+
+        for sheet_name in wb_openpyxl.sheetnames:
+            ws_openpyxl = wb_openpyxl[sheet_name]
+            try:
+                ws_xlw = wb_xlw.sheets[sheet_name]
+            except Exception:
                 continue
-            ws = wb[sheet_name]
-            for row in ws.iter_rows():
-                for cell in row:
-                    if cell.value is None or (isinstance(cell.value, str) and cell.value.startswith('=')):
-                        continue
-                    if '0%' in cell.number_format or '%' in cell.number_format:
-                        continue
-                    if isinstance(cell.value, (int, float)):
-                        cell.value /= 1.95583
-                        # Reapply formatting
-                        cell.font = copy.copy(cell.font)
-                        cell.fill = copy.copy(cell.fill)
-                        cell.border = copy.copy(cell.border)
-                        cell.alignment = copy.copy(cell.alignment)
-                        cell.number_format = copy.copy(cell.number_format)
-                        cell.protection = copy.copy(cell.protection)
 
-        # Save the openpyxl-processed part to a temporary file
+            if sheet_name == "indicators":
+                # Process via xlwings to preserve icon sets
+                for row in ws_xlw.used_range.rows:
+                    for cell in row:
+                        val = cell.value
+                        if val is None or (isinstance(val, str) and val.startswith('=')):
+                            continue
+                        if cell.number_format and ('%' in cell.number_format or '0%' in cell.number_format):
+                            continue
+                        if isinstance(val, (int, float)):
+                            cell.value = val / 1.95583
+            else:
+                # Update numeric cells using values from openpyxl
+                for row in ws_openpyxl.iter_rows():
+                    for cell in row:
+                        val = cell.value
+                        addr = cell.coordinate
+                        if val is None or (isinstance(val, str) and val.startswith('=')):
+                            continue
+                        if '0%' in cell.number_format or '%' in cell.number_format:
+                            continue
+                        if isinstance(val, (int, float)):
+                            converted = val / 1.95583
+                            ws_xlw.range(addr).value = converted
+
+        # Save final version
         base = os.path.basename(file_path)
         name, ext = os.path.splitext(base)
-        temp_path = os.path.join(os.getcwd(), f"{name}_temp{ext}")
-        wb.save(temp_path)
-
-        # Reopen the saved file with xlwings to process "indicators" sheet
-        app = xw.App(visible=False)
-        wb_xlw = app.books.open(temp_path)
-
-        try:
-            sheet = wb_xlw.sheets['indicators']
-        except Exception:
-            sheet = None
-
-        if sheet:
-            for row in sheet.used_range.rows:
-                for cell in row:
-                    value = cell.value
-                    if value is None or (isinstance(value, str) and value.startswith('=')):
-                        continue
-                    if cell.number_format and ('%' in cell.number_format or '0%' in cell.number_format):
-                        continue
-                    if isinstance(value, (int, float)):
-                        cell.value = value / 1.95583
-
-        # Save the final version
         final_path = os.path.join(os.getcwd(), f"{name}_EUR{ext}")
         wb_xlw.save(final_path)
         wb_xlw.close()
         app.quit()
 
-        # Delete temp file if needed
-        if os.path.exists(temp_path):
-            os.remove(temp_path)
-
         status_label.config(text="Conversion complete", fg="green")
 
     except Exception as e:
         status_label.config(text=f"Error: {str(e)}", fg="red")
+
