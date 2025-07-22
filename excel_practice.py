@@ -96,7 +96,7 @@ def convert_excel(file_path, status_label):
                     new_cell = ws_out.cell(row=cell.row, column=cell.column)
                     new_cell.value = cell.value
 
-                    # Convert numeric values
+                    # Convert numeric values (excluding percentages/formulas)
                     if cell.value is not None and isinstance(cell.value, (int, float)) and \
                        not (cell.number_format and ('%' in cell.number_format or '0%' in cell.number_format)):
                         new_cell.value = cell.value / 1.95583
@@ -117,18 +117,18 @@ def convert_excel(file_path, status_label):
                     if cell.hyperlink:
                         new_cell.hyperlink = cell.hyperlink
 
-        # Save temporary file without "indicators"
+        # Save temporary workbook (without "indicators")
         temp_path = os.path.join(os.getcwd(), "no_indicators.xlsx")
         wb_out.save(temp_path)
 
-        # Step 2: Process "indicators" using xlwings and append to final workbook
+        # Step 2: Process "indicators" using xlwings
         app = xw.App(visible=False)
         wb_original = app.books.open(file_path)
         wb_temp = app.books.open(temp_path)
 
         try:
             sheet = wb_original.sheets['indicators']
-            # Convert numeric values while preserving flags
+            # Convert numeric values
             for row in sheet.used_range.rows:
                 for cell in row:
                     val = cell.value
@@ -143,10 +143,21 @@ def convert_excel(file_path, status_label):
             status_label.config(text=f"Error processing 'indicators': {str(e)}", fg="red")
 
         if sheet:
-            # Copy "indicators" to end of processed workbook
-            sheet.api.Copy(After=wb_temp.sheets[wb_temp.sheets.count - 1].api)
+            # Find position after "Actual MTD" and before "HD"
+            insert_index = wb_temp.sheets.count  # Default to end
+            for i, sh in enumerate(wb_temp.sheets):
+                if sh.name.strip() == "Actual MTD":
+                    insert_index = i + 1
+                    break
 
-        # Save final file
+            # Copy "indicators" before that position
+            sheet.api.Copy(Before=wb_temp.sheets[insert_index].api)
+
+        # AutoFit all columns in all sheets (to fix clipping)
+        for sh in wb_temp.sheets:
+            sh.autofit()
+
+        # Save final workbook
         base = os.path.basename(file_path)
         name, ext = os.path.splitext(base)
         final_path = os.path.join(os.getcwd(), f"{name}_EUR{ext}")
@@ -163,6 +174,7 @@ def convert_excel(file_path, status_label):
 
     except Exception as e:
         status_label.config(text=f"Error: {str(e)}", fg="red")
+
 
 
 
