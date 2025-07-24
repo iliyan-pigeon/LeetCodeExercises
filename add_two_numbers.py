@@ -26,3 +26,21 @@ class Solution(object):
                 l2 = l2.next
 
         return dummy_head.next
+
+
+
+list1 = ListNode(2)
+list1_1 = ListNode(4)
+list1_2 = ListNode(3)
+list1.next = list1_1
+list1_1.next = list1_2
+
+list2 = ListNode(5)
+list2_1 = ListNode(6)
+list2_2 = ListNode(4)
+list2.next = list2_1
+list2_1.next = list2_2
+
+
+a = Solution()
+print(a.addTwoNumbers(list1, list2))
