@@ -35,17 +35,17 @@ class Solution(object):
             current = current.next
             nodes_count += 1
 
-        node_to_remove = nodes_count - (n-1)
-        current = dummy_node.next
+        node_to_remove = nodes_count - n + 1
+        current = dummy_node
         current_node = 0
 
         while True:
-            current_node += 1
 
             if current_node == node_to_remove-1:
                 current.next = current.next.next
                 break
 
+            current_node += 1
             current = current.next
-            
+
         return dummy_node.next
