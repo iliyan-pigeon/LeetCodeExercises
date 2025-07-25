@@ -4,6 +4,7 @@ class ListNode(object):
         self.next = next
 
 
+# Solution 1
 class Solution(object):
     def removeNthFromEnd(self, head, n):
         dummy = ListNode(0)
@@ -20,3 +21,31 @@ class Solution(object):
         second.next = second.next.next
 
         return dummy.next
+
+
+# Solution 2
+class Solution(object):
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        nodes_count = 0
+        dummy_node = ListNode(0)
+        dummy_node.next = head
+        current = dummy_node.next
+
+        while current:
+            current = current.next
+            nodes_count += 1
+
+        node_to_remove = nodes_count - (n-1)
+        current = dummy_node.next
+        current_node = 0
+
+        while True:
+            current_node += 1
+
+            if current_node == node_to_remove-1:
+                current.next = current.next.next
+                break
+
+            current = current.next
+            
+        return dummy_node.next
