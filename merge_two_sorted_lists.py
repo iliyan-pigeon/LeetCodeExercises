@@ -51,3 +51,28 @@ class Solution(object):
 
         return dummy.next
 
+
+# Solution 3
+class Solution(object):
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode()
+        current = dummy
+
+        while list1 or list2:
+            if list1 and list2:
+                if list1.val <= list2.val:
+                    current.next = ListNode(list1.val)
+                    current = current.next
+                    list1 = list1.next
+                else:
+                    current.next = ListNode(list2.val)
+                    current = current.next
+                    list2 = list2.next
+            elif list1:
+                current.next = list1
+                break
+            elif list2:
+                current.next = list2
+                break
+
+        return dummy.next
