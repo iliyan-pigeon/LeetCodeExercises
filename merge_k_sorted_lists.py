@@ -1,4 +1,5 @@
 from typing import Optional, List
+from heapq import heappop, heappush
 
 
 class ListNode:
@@ -7,6 +8,7 @@ class ListNode:
         self.next = next
 
 
+# Solution 1
 class Solution(object):
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         dummy = ListNode()
@@ -25,4 +27,33 @@ class Solution(object):
             current = current.next
 
         return dummy.next
-    
+
+
+# Solution 2
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        # Create a min-heap
+        min_heap = []
+
+        # Initialize the heap with the head of each list
+        for i, node in enumerate(lists):
+            if node:
+                heappush(min_heap, (node.val, i, node))
+
+        # Create a dummy node to simplify the merge logic
+        dummy = ListNode()
+        current = dummy
+
+        # Merge the lists
+        while min_heap:
+            # Extract the smallest element from the heap
+            val, i, node = heappop(min_heap)
+            # Add the extracted value to the merged list
+            current.next = ListNode(val)
+            current = current.next
+
+            # If the extracted node has a next node, add it to the heap
+            if node.next:
+                heappush(min_heap, (node.next.val, i, node.next))
+
+        return dummy.next
