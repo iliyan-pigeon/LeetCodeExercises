@@ -16,4 +16,3 @@ class Solution:
             head = head.next
 
         return values == values[::-1]
-    
