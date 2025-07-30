@@ -7,6 +7,7 @@ class ListNode:
         self.next = next
 
 
+# Solution 1
 class Solution:
     def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
         visited = []
@@ -18,4 +19,17 @@ class Solution:
             visited.append(head)
             head = head.next
 
-        return  
+        return
+
+
+# Solution 2
+class Solution:
+    def detectCycle(self, head):
+        slow, fast = head, head
+        while fast and fast.next:
+            slow, fast = slow.next, fast.next.next
+            if slow == fast:
+                while head != slow:
+                    head, slow = head.next, slow.next
+                return head
+        return 
