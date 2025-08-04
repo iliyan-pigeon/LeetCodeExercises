@@ -30,4 +30,3 @@ class Solution:
                     root.right = rights.pop()
 
             root = root.right
-            
