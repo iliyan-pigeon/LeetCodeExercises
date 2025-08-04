@@ -36,3 +36,29 @@ class Solution:
             current = current.next
 
         return dummy.next
+
+
+# Solution 2
+class Solution:
+
+    def reorderList(self, head: Optional[ListNode]) -> None:
+
+        if not head:
+            return
+
+        slow, fast = head, head
+
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        prev, curr = None, slow.next
+
+        while curr:
+            curr.next, prev, curr = prev, curr, curr.next
+
+        first, second = head, prev
+
+        while second:
+            first.next, first = second, first.next
+            second.next, second = first, second.next
