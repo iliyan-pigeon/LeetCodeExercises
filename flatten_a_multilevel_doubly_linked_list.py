@@ -45,3 +45,44 @@ class Solution:
         head, dummy, current, previous = add_nodes(head, dummy, current, previous)
 
         return head
+
+
+# Solution 2
+class Solution:
+    def flatten(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        if not head:
+            return head
+
+        def dfs(node):
+            current = node
+            last = node
+
+            while current:
+                next_node = current.next
+                # If there is a child, recursively flatten
+                if current.child:
+                    # Flatten the child list
+                    child_head = current.child
+                    child_last = dfs(child_head)
+
+                    # Connect current node to child
+                    current.next = child_head
+                    child_head.prev = current
+
+                    # If there was a next, connect it after the child
+                    if next_node:
+                        child_last.next = next_node
+                        next_node.prev = child_last
+
+                    # Set child to None
+                    current.child = None
+                    last = child_last
+                    current = next_node
+                else:
+                    last = current
+                    current = next_node
+
+            return last
+
+        dfs(head)
+        return head
