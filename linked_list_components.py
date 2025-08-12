@@ -9,19 +9,19 @@ class ListNode:
 
 class Solution:
     def numComponents(self, head: Optional[ListNode], nums: List[int]) -> int:
+        pos = {}
+        i = 0
+        current = head
+        while current:
+            pos[current.val] = i
+            current = current.next
+            i += 1
 
-        nodes_values = []
+        nums.sort(key=lambda x: pos[x])
 
-        while head:
-            nodes_values.append(head.val)
-            head = head.next
-
-        nums = sorted(nums, key=lambda x: {num: i for i, num in enumerate(nodes_values)}.get(x, len(nodes_values)))
         connected = 1
-        previous = nums[0]
         for index in range(1, len(nums)):
-            if abs(nodes_values.index(nums[index]) - nodes_values.index(previous)) > 1:
+            if pos[nums[index]] - pos[nums[index - 1]] > 1:
                 connected += 1
-            previous = nums[index]
 
         return connected
