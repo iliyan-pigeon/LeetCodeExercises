@@ -24,4 +24,3 @@ class Solution:
         if root:
             invert(root)
         return root
-    
