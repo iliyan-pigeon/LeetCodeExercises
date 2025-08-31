@@ -12,8 +12,9 @@ class BSTIterator:
 
     def __init__(self, root: Optional[TreeNode]):
         pass
-    
-    def next(self) -> int:
 
+    def next(self) -> int:
+        pass
+    
     def hasNext(self) -> bool:
 
