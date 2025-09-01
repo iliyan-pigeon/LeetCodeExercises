@@ -15,6 +15,6 @@ class BSTIterator:
 
     def next(self) -> int:
         pass
-    
-    def hasNext(self) -> bool:
 
+    def hasNext(self) -> bool:
+        pass
