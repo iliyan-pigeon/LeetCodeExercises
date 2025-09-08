@@ -11,3 +11,5 @@ class TreeNode:
 class Solution:
     def countNodes(self, root: Optional[TreeNode]) -> int:
         count_nodes = 0
+
+        return count_nodes
