@@ -12,4 +12,18 @@ class Solution:
     def countNodes(self, root: Optional[TreeNode]) -> int:
         count_nodes = 0
 
+        def inner_func(node):
+            count = 0
+            if node:
+                count += 1
+            else:
+                return count
+
+            count += inner_func(node.left)
+            count += inner_func(node.right)
+
+            return count
+
+        count_nodes += inner_func(root)
+
         return count_nodes
