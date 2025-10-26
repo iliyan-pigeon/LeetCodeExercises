@@ -1,2 +1,3 @@
 class Solution:
-    pass
+    def reverse(self, x: int) -> int:
+        pass
