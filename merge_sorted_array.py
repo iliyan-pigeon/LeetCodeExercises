@@ -1,12 +1,8 @@
+from typing import List
+
+
 class Solution(object):
     def merge(self, nums1, m, nums2, n):
-        """
-        :type nums1: List[int]
-        :type m: int
-        :type nums2: List[int]
-        :type n: int
-        :rtype: None Do not return anything, modify nums1 in-place instead.
-        """
 
         p1 = m - 1
         p2 = n - 1
@@ -26,3 +22,17 @@ class Solution(object):
             nums1[p] = nums2[p2]
             p2 -= 1
             p -= 1
+
+
+a = Solution()
+print(a.merge([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3))
+
+
+# Solution 2
+class Solution:
+    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        for i in range(n):
+            nums1[m + i] = nums2[i]
+
+        nums1.sort()
+
