@@ -16,4 +16,3 @@ class Trie
             if word.startswith(prefix):
                 return True
             return False
-        
