@@ -32,3 +32,19 @@ class Solution:
                 pointer += 1
 
         return len(nums)
+
+
+# Solution 3
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        control = set()
+        removed = 0
+
+        for i in range(len(nums)):
+            if nums[i-removed] in control:
+                nums.pop(i-removed)
+                removed += 1
+            else:
+                control.add(nums[i-removed])
+
+        return len(nums)
