@@ -20,3 +20,19 @@ class Solution:
                 pointer += 1
 
         return len(nums)
+
+
+# Solution 3
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        controller = {}
+        removed = 0
+
+        for i in range(len(nums)):
+            if nums[i-removed] not in controller:
+                controller[nums[i-removed]] = 1
+            elif controller[nums[i-removed]] == 2:
+                nums.pop(i-removed)
+                removed += 1
+            else:
+                controller[nums[i-removed]] += 1
